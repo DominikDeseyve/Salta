@@ -1,61 +1,56 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BoardManager : MonoBehaviour
 {
-    public GameObject mCellPrefab;
 
-    [HideInInspector]
-    public CellManager[,] mAllCells = new CellManager[8, 8];
+    public int worldWidth = 10;
+    public int worldHeight = 10;
 
-    // We create the board here, no surprise
-    public void Create()
-    {
-        #region Create
-        for (int y = 0; y < 8; y++)
-        {
-            for (int x = 0; x < 8; x++)
-            {
-                // Create the cell
-                GameObject newCell = Instantiate(mCellPrefab, transform);
+    public Field[,] _gamefield = new Field[10, 10];
 
-                // Position
-                RectTransform rectTransform = newCell.GetComponent<RectTransform>();
-                rectTransform.anchoredPosition = new Vector2((x * 100) + 50, (y * 100) + 50);
-
-                // Setup
-                mAllCells[x, y] = newCell.GetComponent<CellManager>();
-                mAllCells[x, y].Setup(new Vector2Int(x, y), this);
-            }
-        }
-        #endregion
-
-        #region Color
-        for (int x = 0; x < 8; x += 2)
-        {
-            for (int y = 0; y < 8; y++)
-            {
-                // Offset for every other line
-                int offset = (y % 2 != 0) ? 0 : 1;
-                int finalX = x + offset;
-
-                // Color
-                mAllCells[finalX, y].GetComponent<Image>().color = new Color32(230, 220, 187, 255);
-            }
-        }
-        #endregion
-    }
-    // Start is called before the first frame update
     void Start()
     {
-        
+        _spawnGame();
+
+    }
+    private void _spawnGame()
+    {
+        Debug.Log("Create World");
+
+        for (int x = 0; x < worldWidth; x++)
+        {
+            for (int z = 0; z < worldHeight; z++)
+            {
+                //Spawne das Schachbrett
+                this._gamefield[x, z] = new Field(x, z);
+                this._gamefield[x, z].spawnGround();
+
+                //Ordne die richtigen Tokens zu
+                if (z == 0 || z == worldHeight - 1)
+                {
+                    this._gamefield[x, z].token = new Startoken();
+                }
+                else if (z == 1 || z == worldHeight - 2)
+                {
+                    this._gamefield[x, z].token = new Moontoken();
+                }
+                else if (z == 2 || z == worldHeight - 3)
+                {
+                    this._gamefield[x, z].token = new Suntoken();
+                }
+                else
+                {
+                    this._gamefield[x, z].token = new Emptytoken();
+                }
+                //TODO: Wertigkeit setzen
+
+                //Spawne Sternsteine auf der ersten Zeile des Spielfelds 
+                this._gamefield[x, z].spawn();
+            }
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

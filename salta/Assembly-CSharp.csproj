@@ -54,9 +54,14 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\BoardManager.cs" />
-     <Compile Include="Assets\Scripts\CellManager.cs" />
+     <Compile Include="Assets\Scripts\Emptytoken.cs" />
+     <Compile Include="Assets\Scripts\Field.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\MainMenu.cs" />
+     <Compile Include="Assets\Scripts\Moontoken.cs" />
+     <Compile Include="Assets\Scripts\Startoken.cs" />
+     <Compile Include="Assets\Scripts\Suntoken.cs" />
+     <Compile Include="Assets\Scripts\Token.cs" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
