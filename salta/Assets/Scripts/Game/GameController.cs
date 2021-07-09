@@ -16,8 +16,8 @@ using UnityEngine;
     private GameState gameState;
 
     private TokenCreator tokenCreator;
-    private Player whitePlayer;
-    private Player blackPlayer;
+    private Player player1;
+    private Player player2;
 
     private Player activePlayer;
     [SerializeField] private Board board;
@@ -30,11 +30,13 @@ using UnityEngine;
         this.tokenCreator = GetComponent<TokenCreator>();
     }
     private void createPlayers() {
-        this.whitePlayer = new Player(TeamType.Player1, this.board);
-        this.whitePlayer.name = "Grün";
-        this.blackPlayer = new Player(TeamType.Player2, this.board);
-        this.blackPlayer.name = "Rot";
-        this.activePlayer = this.whitePlayer;
+        this.player1 = new Player(TeamType.Player1, this.board);
+        this.player1.name = "Grün";
+        this.player1.color = Color.green;
+        this.player2 = new Player(TeamType.Player2, this.board);
+        this.player2.name = "Rot";
+        this.player2.color = Color.red;
+        this.activePlayer = this.player1;
     }
     void Start()
     {
@@ -46,7 +48,7 @@ using UnityEngine;
         this.setGameState(GameState.Init);
         this.board.setDependencies(this);
         this.createTokenFromLayout(this.startingBoardLayout);
-        this.activePlayer = this.whitePlayer;
+        this.activePlayer = this.player1;
         this.overlay.displayPlayer(this.activePlayer);
         this.activePlayer.generateAllAvailableMoves();
         this.setGameState(GameState.Play);
@@ -80,18 +82,18 @@ using UnityEngine;
         return this.activePlayer.teamType == pTeamType;
     }
     private void changeTeam() {
-        if(this.activePlayer == this.whitePlayer) {
-            this.activePlayer = this.blackPlayer;
+        if(this.activePlayer == this.player1) {
+            this.activePlayer = this.player2;
         } 
         else {
-            this.activePlayer = this.whitePlayer;
+            this.activePlayer = this.player1;
         }
         this.overlay.displayPlayer(this.activePlayer);
         this.count++;
         this.overlay.displayCount(this.count);
     }
     private Player getPassivePlayer() {
-        return this.activePlayer == this.whitePlayer ? this.blackPlayer : this.whitePlayer;
+        return this.activePlayer == this.player1 ? this.player2 : this.player1;
     }
     public void endTurn() {
         //calculate all new available moves for the next round
@@ -105,7 +107,7 @@ using UnityEngine;
     }    
     private bool checkIfGameFinished() {        
         return this.board.checkIfGameFinished(this.activePlayer);
-    }
+    }   
     private void endGame() {
         Debug.Log("GAME END!");
         int remainingMoves = this.countRemainingMoves();
@@ -114,20 +116,25 @@ using UnityEngine;
         
     }
     public void restartGame() {
-        this.whitePlayer.activeTokens.ForEach(t => Destroy(t.gameObject));
-        this.blackPlayer.activeTokens.ForEach(t => Destroy(t.gameObject));
+        this.player1.activeTokens.ForEach(t => Destroy(t.gameObject));
+        this.player2.activeTokens.ForEach(t => Destroy(t.gameObject));
         board.onGameRestarted();
-        this.whitePlayer.onGameRestarted();
-        this.blackPlayer.onGameRestarted();
+        this.player1.onGameRestarted();
+        this.player2.onGameRestarted();
         this.startNewGame();
     }
     private int countRemainingMoves() {
-        return 10;
+        return 3; //TODO
     }
     public bool isGamePlaying() {
         return this.gameState == GameState.Play;
     }
     private void setGameState(GameState pState) {
         this.gameState = pState;
+    }
+
+
+    public Player getActivePlayer() {
+        return this.activePlayer;
     }
 }

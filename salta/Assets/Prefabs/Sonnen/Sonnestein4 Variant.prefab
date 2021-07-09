@@ -39,6 +39,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tokenType: 0
+  valency: 4
   availableMoves: []
   availableJumps: []
 --- !u!1001 &8368369054362366243

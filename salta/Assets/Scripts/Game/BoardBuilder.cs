@@ -81,14 +81,13 @@ public class BoardBuilder : MonoBehaviour
         mesh.vertices = vertices;
         mesh.triangles = tris;
         mesh.RecalculateNormals();
-
-        tileObject.layer = LayerMask.NameToLayer("Tile");
+        
         tileObject.AddComponent<BoxCollider>();
-
         return tileObject;
     }
 
     public void selectField(Vector2Int pCoords) {
+        if(!SettingsController.Instance.settings.enableSelection) return;
         this.highlightedField = pCoords;      
         this.tiles[pCoords.x, pCoords.y].GetComponent<MeshRenderer>().material.color = this.highlightedColor;
     }

@@ -12,6 +12,8 @@ public class Player {
 
     public string name{ get; set; }
 
+    public Color color { get; set; }
+
     public Player(TeamType pTeamType, Board pBoard) {
         this.teamType = pTeamType;
         this.board = pBoard;

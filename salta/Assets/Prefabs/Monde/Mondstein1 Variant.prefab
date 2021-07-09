@@ -1,19 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &7171964038931432405
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7652114153643306720}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 046ea2586bf9f9a489accc3eb0028597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 0
-  height: 0
 --- !u!114 &1267135555699124683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39,8 +25,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tokenType: 0
+  valency: 1
   availableMoves: []
   availableJumps: []
+--- !u!114 &7171964038931432405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7652114153643306720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 046ea2586bf9f9a489accc3eb0028597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0
+  height: 0
 --- !u!1001 &7417618347877520305
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -136,7 +137,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b5caaa1864762704f95bd2dcd32c7743,
         type: 3}
       propertyPath: m_Name
-      value: Mondstein1
+      value: Mondstein1 Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5caaa1864762704f95bd2dcd32c7743, type: 3}

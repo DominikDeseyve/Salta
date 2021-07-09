@@ -9,7 +9,7 @@ public class Overlay : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI  countText;
 
-    [SerializeField] private GameObject jumpBox;
+    [SerializeField] private TextMeshProUGUI jumpBox;
 
     public void displayPlayer(Player pPlayer) {       
         this.playerText.SetText(pPlayer.name.ToString() + " ist dran!");
@@ -19,15 +19,16 @@ public class Overlay : MonoBehaviour
         this.countText.SetText("Anzahl Züge: " + pCount);
     }
 
-    public void showSalta() {
-        this.jumpBox.SetActive(true);
+    public void showSalta(Player pActivePlayer) {
+        this.jumpBox.enabled = true;
+        this.jumpBox.color = pActivePlayer.color;
         StartCoroutine(fadeInSalta(this.jumpBox, 3));
     }
     
 
-    IEnumerator fadeInSalta(GameObject pGameObject, float pSeconds)
+    IEnumerator fadeInSalta(TextMeshProUGUI pGameObject, float pSeconds)
      { 
          yield return new WaitForSeconds(pSeconds); 
-         pGameObject.SetActive(false);        
+         this.jumpBox.enabled = false;    
      }
 }

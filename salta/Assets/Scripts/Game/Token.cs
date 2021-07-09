@@ -7,6 +7,8 @@ using UnityEngine;
 public class Token : MonoBehaviour
 {
     [SerializeField] public TokenType tokenType;
+
+    [SerializeField] public int valency;
     private MaterialSetter materialSetter;
 
     public Board board { protected get; set; }
@@ -22,7 +24,7 @@ public class Token : MonoBehaviour
 
     private ObjectTweener tweener;
 
-    protected int valency { get; }
+  
 
     private Vector2Int[] moveDirections = new Vector2Int[]{
         new Vector2Int(1,-1),
@@ -42,9 +44,13 @@ public class Token : MonoBehaviour
                 if(!board.checkIfCoordsOnBoard(nextCoords)) {
                     break;
                 }
-                if(token == null) { //player can regulary move
-                    this.addMove(nextCoords);
+                if (token == null)
+                { //player can regulary move
+                    this.addMove(nextCoords);                 
                     break;
+                } else if (token.isSamePlayer(this)) {                  
+                    break;
+                
                 } else if(!token.isSamePlayer(this)) { //salta jump
                     //normal playmode can only jump over 1 token
                     //TODO: nur noch vorne jumpen
@@ -58,9 +64,7 @@ public class Token : MonoBehaviour
                     }
                     
                     break;
-                } else if(token.isSamePlayer(this)) {
-                    break;
-                }
+                } 
             }
         }        
     }
@@ -108,11 +112,7 @@ public class Token : MonoBehaviour
         this.availableMoves.Add(pCoords);
     }
     protected void addJump(Vector2Int pCoords) {
-        this.availableJumps.Add(pCoords);
-        Debug.Log(this.occupied);
-        Debug.Log("JUMPS");
-        Debug.Log(this.availableJumps.Count);
-        Debug.Log(pCoords);
+        this.availableJumps.Add(pCoords);              
     }
     public void setData(Vector2Int pCoords, TeamType pPlayer, Board pBoard) {
         this.player = pPlayer;
@@ -121,7 +121,7 @@ public class Token : MonoBehaviour
         transform.position = pBoard.calcPositionFromCoords(pCoords);
     }
 
-    public int getValency() {
+    public int getTokenTypeValue() {
         switch (this.tokenType) {
             case TokenType.Sun:
                 return 2;   

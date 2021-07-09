@@ -40,8 +40,9 @@ public class Board : MonoBehaviour
     }
 
     private Vector2Int calcCoordsFromPosition(Vector3 pPosition) {
-
-        Debug.Log(transform.InverseTransformPoint(pPosition).x);
+        Debug.Log("her");
+        Debug.Log(pPosition.x);
+        Debug.Log(pPosition.z);
         int x = Mathf.FloorToInt(transform.InverseTransformPoint(pPosition).x / this.fieldSize) + GAMEFIELD_SIZE / 2;
         int y = Mathf.FloorToInt(transform.InverseTransformPoint(pPosition).z / this.fieldSize) + GAMEFIELD_SIZE / 2;
         return new Vector2Int(x, y);
@@ -56,7 +57,6 @@ public class Board : MonoBehaviour
         Debug.Log(coords);
         Token token = getTokenOnField(coords);
         Debug.Log(token);
-        Debug.Log(this.selectedToken);
         if(this.selectedToken) {
             Token jumpToken = this.getTokenThatCanJump();            
             if(token != null && this.selectedToken == token) {
@@ -67,7 +67,7 @@ public class Board : MonoBehaviour
                 this.selectToken(token);
             } else if(jumpToken != null && !this.selectedToken.canJumpTo(coords)) {
                 //if there is any token that can jump and selected token can not jump --> show salta                
-                this.gameController.overlay.showSalta();               
+                this.gameController.overlay.showSalta(this.gameController.getActivePlayer());               
             }
             else if(this.selectedToken.canJumpTo(coords)) {
                 //make jump               
@@ -79,7 +79,7 @@ public class Board : MonoBehaviour
             }            
         } else {
             //first, select token that should be moved
-            Debug.Log("wähle stein aus, welcher bewegt werden soll");            
+            //Debug.Log("wähle stein aus, welcher bewegt werden soll");            
             if(token != null && this.gameController.isActiveTeam(token.player)) {
                 this.selectToken(token);               
             }
@@ -106,17 +106,17 @@ public class Board : MonoBehaviour
     }
     private void updateBoardOnTokenMove( Vector2Int pNewCoords, Vector2Int pOldCoords, Token pNewToken, Token pOldToken) {
         this.gameField[pOldCoords.x, pOldCoords.y] = pOldToken;
-        this.gameField[pNewCoords.x, pNewCoords.y] = pNewToken;
-        Debug.Log(this.gameField);
+        this.gameField[pNewCoords.x, pNewCoords.y] = pNewToken;      
     }
-    private void selectToken(Token pToken) {
-        Debug.Log("select Token");
+    private void selectToken(Token pToken) {        
         this.selectedToken = pToken;
         this.boardBuilder.selectField(pToken.occupied);
         List<Vector2Int> availableMoves = this.selectedToken.availableMoves;
-        availableMoves.AddRange(this.selectedToken.availableJumps);
-        this.showFieldSelectors(availableMoves);
-        //this.showFieldSelectors(availableJumps);
+        List<Vector2Int> availableJumps = this.selectedToken.availableJumps;
+        List<Vector2Int> allFields = new List<Vector2Int>(); //be careful on copy list, because of reference
+        allFields.AddRange(availableJumps);
+        allFields.AddRange(availableMoves);      
+        this.showFieldSelectors(allFields);      
     }
     private void deselectToken() {
         this.boardBuilder.deselectField();
@@ -124,13 +124,23 @@ public class Board : MonoBehaviour
         this.fieldSelectorCreator.clearSelectors();
     }
     private void showFieldSelectors(List<Vector2Int> pSelection) {
-        List<Vector3> fieldData = new List<Vector3>();
+        Dictionary<Vector3, Color> fieldData = new Dictionary<Vector3, Color>();
+        Debug.Log("hier");
+
+        
         for (int i = 0; i < pSelection.Count; i++)
         {
+            Debug.Log(pSelection[i]);
             Vector3 position = this.calcPositionFromCoords(pSelection[i]);
             bool isFieldFree = this.getTokenOnField(pSelection[i]) == null;
+            bool isJumpField = this.selectedToken.availableJumps.Contains(pSelection[i]);
+            bool mustJump = this.getTokenThatCanJump() != null;            
             if(isFieldFree) {
-                fieldData.Add(position);
+                if (mustJump && !isJumpField) {
+                    fieldData.Add(position, Color.red);
+                } else {
+                    fieldData.Add(position, Color.green);
+                }                
             }            
         }
         this.fieldSelectorCreator.showSelection(fieldData);
@@ -162,22 +172,29 @@ public class Board : MonoBehaviour
 
     public bool checkIfGameFinished(Player pPlayer) {
         TeamType teamType = pPlayer.teamType;
-        //determine start of y 
-        int startY;
-        if(teamType == TeamType.Player1) {
-            startY = 0;
+
+        int[] ys;
+        if (teamType == TeamType.Player1){
+            ys = new int[] {9,8,7};
         } else {
-            startY = GAMEFIELD_SIZE - 3;
+            ys = new int[] {2,1,0};
         }
-        for (var y = startY; y < startY + 3; y+=1) {
+
+        foreach (int y in ys) {
             int startX = y % 2;
             for (var x = startX; x < GAMEFIELD_SIZE; x += 2) {
-                Token token = this.getTokenOnField(new Vector2Int(x, y));                               
-                if(token == null || token.getValency() != y || token.player != teamType) {
-                    return false;
-                }
+                int blackFieldIndex = x / 2;
+                Token token = this.getTokenOnField(new Vector2Int(x, y));               
+                if(token != null) {
+                    int tokenTypeValue = token.getTokenTypeValue();
+                    int valency = token.valency;
+                    if((2 - tokenTypeValue != 0) || (5 - valency != 0) ||token.player != teamType) {
+                        return false;
+                    }
+                }                
             }
         }            
+       
         return true;
     }
 

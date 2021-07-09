@@ -1,5 +1,33 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &4473559184047131928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418901257282319765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f007d4a283c02044ad1122610408ecd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tokenType: 0
+  valency: 3
+  availableMoves: []
+  availableJumps: []
+--- !u!114 &7348470705517958847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418901257282319765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00e42889a76f1eb4da9d9607405803e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8308617141642248547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14,33 +42,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0
   height: 0
---- !u!114 &7348470705517958847
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1418901257282319765}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00e42889a76f1eb4da9d9607405803e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4473559184047131928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1418901257282319765}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f007d4a283c02044ad1122610408ecd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tokenType: 0
-  availableMoves: []
-  availableJumps: []
 --- !u!1001 &2265762498553039044
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -136,7 +137,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 255cc9049c5a8a54d961572b027327d3,
         type: 3}
       propertyPath: m_Name
-      value: Sternestein3
+      value: Sternestein3 Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 255cc9049c5a8a54d961572b027327d3, type: 3}

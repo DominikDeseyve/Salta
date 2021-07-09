@@ -10,10 +10,7 @@ public class ObjectTweener : MonoBehaviour
      [SerializeField] private float height;
 
     public void moveTo(Transform pTransform, Vector3 pTargetPosition) {
-        float distance = Vector3.Distance(pTargetPosition, pTransform.position);
-        Debug.Log("distance: " + distance.ToString());
-        Debug.Log("Old position:" +  pTransform.position.ToString());
-        Debug.Log("new position:" +  pTargetPosition.ToString());
+        float distance = Vector3.Distance(pTargetPosition, pTransform.position);      
       
         transform.position = pTargetPosition;
         //transform.DOMove(pTargetPosition, distance / speed);

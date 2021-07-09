@@ -42,6 +42,7 @@
      <Compile Include="Assets\Scripts\Game\Board.cs" />
      <Compile Include="Assets\Scripts\Game\BoardBuilder.cs" />
      <Compile Include="Assets\Scripts\Game\BoardLayout.cs" />
+     <Compile Include="Assets\Scripts\Game\CameraController.cs" />
      <Compile Include="Assets\Scripts\Game\FieldSelectorCreator.cs" />
      <Compile Include="Assets\Scripts\Game\GameController.cs" />
      <Compile Include="Assets\Scripts\Game\Overlay.cs" />
@@ -56,10 +57,12 @@
      <Compile Include="Assets\Scripts\InputSystem\UIButton.cs" />
      <Compile Include="Assets\Scripts\InputSystem\UIInputHandler.cs" />
      <Compile Include="Assets\Scripts\InputSystem\UIInputReceiver.cs" />
-     <Compile Include="Assets\Scripts\MainMenu\MainMenu.cs" />
-     <Compile Include="Assets\Scripts\SettingsMenu\Database.cs" />
-     <Compile Include="Assets\Scripts\SettingsMenu\Settings.cs" />
-     <Compile Include="Assets\Scripts\SettingsMenu\SettingsMenu.cs" />
+     <Compile Include="Assets\Scripts\Menu\Database.cs" />
+     <Compile Include="Assets\Scripts\Menu\MainMenu.cs" />
+     <Compile Include="Assets\Scripts\Menu\Settings.cs" />
+     <Compile Include="Assets\Scripts\Menu\SettingsController.cs" />
+     <Compile Include="Assets\Scripts\Menu\SettingsMenu.cs" />
+     <Compile Include="Assets\Scripts\ResponsiveUI\ResponsiveScaler.cs" />
      <Compile Include="Assets\Scripts\Tweeners\ObjectTweener.cs" />
      <Compile Include="Assets\Scripts\Utilitis\MaterialSetter.cs" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
