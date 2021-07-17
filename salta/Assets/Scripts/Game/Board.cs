@@ -39,10 +39,7 @@ public class Board : MonoBehaviour
         return this.bottomLeftFieldPos.position + new Vector3(pCoords.x * this.fieldSize, 0f, pCoords.y * this.fieldSize);
     }
 
-    private Vector2Int calcCoordsFromPosition(Vector3 pPosition) {
-        Debug.Log("her");
-        Debug.Log(pPosition.x);
-        Debug.Log(pPosition.z);
+    private Vector2Int calcCoordsFromPosition(Vector3 pPosition) {        
         int x = Mathf.FloorToInt(transform.InverseTransformPoint(pPosition).x / this.fieldSize) + GAMEFIELD_SIZE / 2;
         int y = Mathf.FloorToInt(transform.InverseTransformPoint(pPosition).z / this.fieldSize) + GAMEFIELD_SIZE / 2;
         return new Vector2Int(x, y);
@@ -53,10 +50,8 @@ public class Board : MonoBehaviour
             Debug.Log("game is not playing");
             return;
         }
-        Vector2Int coords = this.calcCoordsFromPosition(pPosition);
-        Debug.Log(coords);
-        Token token = getTokenOnField(coords);
-        Debug.Log(token);
+        Vector2Int coords = this.calcCoordsFromPosition(pPosition);        
+        Token token = getTokenOnField(coords);        
         if(this.selectedToken) {
             Token jumpToken = this.getTokenThatCanJump();            
             if(token != null && this.selectedToken == token) {
@@ -124,13 +119,9 @@ public class Board : MonoBehaviour
         this.fieldSelectorCreator.clearSelectors();
     }
     private void showFieldSelectors(List<Vector2Int> pSelection) {
-        Dictionary<Vector3, Color> fieldData = new Dictionary<Vector3, Color>();
-        Debug.Log("hier");
-
-        
+        Dictionary<Vector3, Color> fieldData = new Dictionary<Vector3, Color>();    
         for (int i = 0; i < pSelection.Count; i++)
-        {
-            Debug.Log(pSelection[i]);
+        {           
             Vector3 position = this.calcPositionFromCoords(pSelection[i]);
             bool isFieldFree = this.getTokenOnField(pSelection[i]) == null;
             bool isJumpField = this.selectedToken.availableJumps.Contains(pSelection[i]);
@@ -170,29 +161,59 @@ public class Board : MonoBehaviour
         return true;
     }
 
-    public bool checkIfGameFinished(Player pPlayer) {
+    public bool checkIfGameFinished(Player pPlayer) {       
         TeamType teamType = pPlayer.teamType;
-
+       
         int[] ys;
         if (teamType == TeamType.Player1){
             ys = new int[] {9,8,7};
         } else {
-            ys = new int[] {2,1,0};
+            ys = new int[] {0,1,2};
         }
-
+        
+        int countY = 0;
         foreach (int y in ys) {
             int startX = y % 2;
+            int countX = 0;
             for (var x = startX; x < GAMEFIELD_SIZE; x += 2) {
                 int blackFieldIndex = x / 2;
-                Token token = this.getTokenOnField(new Vector2Int(x, y));               
-                if(token != null) {
-                    int tokenTypeValue = token.getTokenTypeValue();
-                    int valency = token.valency;
-                    if((2 - tokenTypeValue != 0) || (5 - valency != 0) ||token.player != teamType) {
+                Debug.Log("X: " + x);
+                Debug.Log("Y: " + y);
+                Token token = this.getTokenOnField(new Vector2Int(x, y));     
+
+                if(token == null) {
+                    return false;
+                }     
+                if(token.player != teamType) {
+                    return false;
+                }  
+                int tokenTypeValue = token.getTokenTypeValue();
+                int valency = token.valency;
+
+                Debug.Log("T1");
+                Debug.Log("countY: " + countY);
+                Debug.Log(token.tokenType);
+                Debug.Log("token type value: " + tokenTypeValue);
+                //check value of sun, moon, star
+                if(countY != tokenTypeValue) {
+                    return false;
+                }
+                Debug.Log("T2");
+                //check valency of specific token type
+                if(teamType == TeamType.Player1) {                    
+                    if(countX != (valency - 1)) {                        
                         return false;
                     }
-                }                
+                } else {
+                    //inverse valency for other player
+                    if(5 - valency != countX) {
+                        return false;
+                    }
+                } 
+                Debug.Log("T3");
+                countX++;
             }
+            countY++;
         }            
        
         return true;

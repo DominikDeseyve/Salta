@@ -100,6 +100,7 @@ using UnityEngine;
         this.activePlayer.generateAllAvailableMoves();
         this.getPassivePlayer().generateAllAvailableMoves();
         if(this.checkIfGameFinished()) {
+            Debug.Log("END GAME!");
             this.endGame();
         } else {
             this.changeTeam();

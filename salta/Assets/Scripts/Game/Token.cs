@@ -124,13 +124,14 @@ public class Token : MonoBehaviour
     public int getTokenTypeValue() {
         switch (this.tokenType) {
             case TokenType.Sun:
-                return 2;   
+                return 0;   
             case TokenType.Moon:
                 return 1;  
             case TokenType.Star:
-                return 0;           
+                return 2;           
             default:
                 return -1;                
         }
     }
+    
 }

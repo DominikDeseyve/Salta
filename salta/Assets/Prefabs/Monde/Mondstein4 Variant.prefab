@@ -24,7 +24,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f007d4a283c02044ad1122610408ecd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tokenType: 0
+  tokenType: 1
   valency: 4
   availableMoves: []
   availableJumps: []
