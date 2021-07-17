@@ -14,6 +14,7 @@ public class FieldSelectorCreator : MonoBehaviour
 
     public void showSelection(Dictionary<Vector3, Color> pFieldData) {
         this.clearSelectors();
+        Debug.Log(pFieldData.Count);
         if(!SettingsController.Instance.settings.enableFieldSelector) return;
         
         foreach (var data in pFieldData) {          

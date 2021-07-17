@@ -17,7 +17,7 @@ public class RestartScreenManager : MonoBehaviour
 
     public void onGameFinished(Player pPlayer, int pRemainingMoves) {
         this.UIRestartScreen.SetActive(true);
-        this.remainingText.text = "mit " + pRemainingMoves + "Spielzügen";
+        this.remainingText.text = "mit " + pRemainingMoves + " Spielzügen";
         this.resultText.text = "Gewinner: " + pPlayer.name;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 
 [RequireComponent(typeof(TokenCreator))]
@@ -109,14 +110,17 @@ using UnityEngine;
     private bool checkIfGameFinished() {        
         return this.board.checkIfGameFinished(this.activePlayer);
     }   
-    private void endGame() {
-        Debug.Log("GAME END!");
+    private void endGame() {        
         int remainingMoves = this.countRemainingMoves();
         restartScreenManager.onGameFinished(activePlayer, remainingMoves);
         this.setGameState(GameState.Finished);
         
     }
     public void restartGame() {
+        this.count = 0;
+        this.activePlayer = this.player1;
+        this.overlay.displayPlayer(this.activePlayer);        
+        this.overlay.displayCount(this.count);
         this.player1.activeTokens.ForEach(t => Destroy(t.gameObject));
         this.player2.activeTokens.ForEach(t => Destroy(t.gameObject));
         board.onGameRestarted();
@@ -125,8 +129,28 @@ using UnityEngine;
         this.startNewGame();
     }
     private int countRemainingMoves() {
-        return 3; //TODO
-    }
+        int remainingMoves = 0;
+
+        PathFinding pathFinding = new PathFinding(10);        
+
+        List<Token> opponentTokenNotInGoal = this.board.getTokenNotInGoal(this.getPassivePlayer());
+
+        foreach (Token token in opponentTokenNotInGoal) { 
+            int startX = token.occupied.x;
+            int startY = token.occupied.y;
+
+            Vector2Int endPosition = this.board.calculateEndPositonOfToken(token);            
+            int endX = endPosition.x;
+            int endY = endPosition.y;
+
+            PathNode[,] grid = this.board.getPathNodeGrid();
+            pathFinding.setGrid(grid);
+            int length = pathFinding.findPath(startX, startY, endX, endY);
+            remainingMoves += length;
+        }
+        return remainingMoves;
+    }    
+    
     public bool isGamePlaying() {
         return this.gameState == GameState.Play;
     }

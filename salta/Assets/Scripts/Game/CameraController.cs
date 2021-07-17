@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour
         switch(view) { 
             case 0:
                 this.transform.position = new Vector3(1361.487f,615.1838f,250.237f);
-                this.transform.rotation = Quaternion.Euler(47.212f,89.92101f,-0.003f);
+                this.transform.rotation = Quaternion.Euler(50.3f,89.92101f,-0.003f);
                 break;
             case 1:
                 this.transform.position = new Vector3(1372.983f,613.6459f,250.4709f);

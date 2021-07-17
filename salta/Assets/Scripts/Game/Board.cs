@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+
 
 [RequireComponent(typeof(FieldSelectorCreator))]
 public class Board : MonoBehaviour
 {
     [SerializeField] private Transform bottomLeftFieldPos;
+
+    [SerializeField] private BoardLayout winBoardLayout;
 
     [SerializeField] private float fieldSize;
 
@@ -45,13 +49,13 @@ public class Board : MonoBehaviour
         return new Vector2Int(x, y);
     }
 
-    public void onFieldSelected(Vector3 pPosition) {
+    public void onFieldSelected(Vector3 pPosition) {        
         if(!this.gameController.isGamePlaying()) {
             Debug.Log("game is not playing");
             return;
         }
         Vector2Int coords = this.calcCoordsFromPosition(pPosition);        
-        Token token = getTokenOnField(coords);        
+        Token token = getTokenOnField(coords);       
         if(this.selectedToken) {
             Token jumpToken = this.getTokenThatCanJump();            
             if(token != null && this.selectedToken == token) {
@@ -103,12 +107,12 @@ public class Board : MonoBehaviour
         this.gameField[pOldCoords.x, pOldCoords.y] = pOldToken;
         this.gameField[pNewCoords.x, pNewCoords.y] = pNewToken;      
     }
-    private void selectToken(Token pToken) {        
+    private void selectToken(Token pToken) {       
         this.selectedToken = pToken;
         this.boardBuilder.selectField(pToken.occupied);
         List<Vector2Int> availableMoves = this.selectedToken.availableMoves;
         List<Vector2Int> availableJumps = this.selectedToken.availableJumps;
-        List<Vector2Int> allFields = new List<Vector2Int>(); //be careful on copy list, because of reference
+        List<Vector2Int> allFields = new List<Vector2Int>(); //be careful on copy list, because of reference        
         allFields.AddRange(availableJumps);
         allFields.AddRange(availableMoves);      
         this.showFieldSelectors(allFields);      
@@ -176,9 +180,7 @@ public class Board : MonoBehaviour
             int startX = y % 2;
             int countX = 0;
             for (var x = startX; x < GAMEFIELD_SIZE; x += 2) {
-                int blackFieldIndex = x / 2;
-                Debug.Log("X: " + x);
-                Debug.Log("Y: " + y);
+                int blackFieldIndex = x / 2;               
                 Token token = this.getTokenOnField(new Vector2Int(x, y));     
 
                 if(token == null) {
@@ -188,17 +190,11 @@ public class Board : MonoBehaviour
                     return false;
                 }  
                 int tokenTypeValue = token.getTokenTypeValue();
-                int valency = token.valency;
-
-                Debug.Log("T1");
-                Debug.Log("countY: " + countY);
-                Debug.Log(token.tokenType);
-                Debug.Log("token type value: " + tokenTypeValue);
+                int valency = token.valency;                
                 //check value of sun, moon, star
                 if(countY != tokenTypeValue) {
                     return false;
-                }
-                Debug.Log("T2");
+                }                
                 //check valency of specific token type
                 if(teamType == TeamType.Player1) {                    
                     if(countX != (valency - 1)) {                        
@@ -209,8 +205,7 @@ public class Board : MonoBehaviour
                     if(5 - valency != countX) {
                         return false;
                     }
-                } 
-                Debug.Log("T3");
+                }                 
                 countX++;
             }
             countY++;
@@ -220,8 +215,7 @@ public class Board : MonoBehaviour
     }
 
     public bool hasToken(Token pToken) {
-        for (int x = 0; x < GAMEFIELD_SIZE; x++)
-        {
+        for (int x = 0; x < GAMEFIELD_SIZE; x++) {
             for (int y = 0; y < GAMEFIELD_SIZE; y++) {
                 if(this.gameField[x,y] == pToken) {
                     return true;
@@ -230,4 +224,61 @@ public class Board : MonoBehaviour
         }
         return false;
     }
+    public List<Token> getTokenNotInGoal(Player pPlayer) {
+        List<Token> tokenList = new List<Token>();
+        for (int x = 0; x < GAMEFIELD_SIZE; x++) {
+            for (int y = 0; y < GAMEFIELD_SIZE; y++) {
+                Token token = this.gameField[x, y];            
+                if(token != null && token.player == pPlayer.teamType) {
+                    int maxY;
+                    int minY;
+                    if(pPlayer.teamType == TeamType.Player1) {
+                        maxY = 6;
+                        minY = 0;
+                    } else {
+                        maxY = 9;
+                        minY = 3;
+                    }
+                    if(token.occupied.y >= minY && token.occupied.y <= maxY) {
+                        tokenList.Add(token);
+                    }
+                }
+            }
+        }
+        return tokenList;
+    }
+    public Vector2Int calculateEndPositonOfToken(Token pToken) {
+        TokenType tokenType = pToken.tokenType;
+        TeamType tokenTeam = pToken.player;
+        int tokenAmount = pToken.valency;
+
+        for (int i = 0; i < this.winBoardLayout.getLength(); i++)
+        {                       
+            TeamType player = this.winBoardLayout.getPlayerAtIndex(i);
+            TokenType type = this.winBoardLayout.getTokenAtIndex(i);
+            int amount = this.winBoardLayout.getAmountAtIndex(i);
+            
+            if(tokenType == type && tokenTeam == player && tokenAmount == amount) {
+                Vector2Int coords = this.winBoardLayout.GetSquareCoordsAtIndex(i);
+                return coords;
+            }  
+        }
+        return new Vector2Int(-1,-1);
+    }
+    public PathNode[,] getPathNodeGrid() {
+        PathNode[,] grid = new PathNode[GAMEFIELD_SIZE, GAMEFIELD_SIZE];
+        for (int x = 0; x < GAMEFIELD_SIZE; x++) {
+            for (int y = 0; y < GAMEFIELD_SIZE; y++) {
+                Token token = this.gameField[x, y];
+                PathNode pathNode = new PathNode(x,y);
+                if(token != null) {
+                    pathNode.isWalkable = false;
+                }
+                grid[x, y] = pathNode;
+            }
+        }
+        return grid;
+    }
+
 }
+ 

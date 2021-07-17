@@ -34,7 +34,7 @@ public class Token : MonoBehaviour
     };
     
 
-    public void selectAvailableSquares() {
+    public void selectAvailableSquares() {        
         this.availableMoves.Clear();
         this.availableJumps.Clear();
         foreach(var dir in this.moveDirections) {
@@ -53,16 +53,15 @@ public class Token : MonoBehaviour
                 
                 } else if(!token.isSamePlayer(this)) { //salta jump
                     //normal playmode can only jump over 1 token
-                    //TODO: nur noch vorne jumpen
+                    //TODO: nur noch vorne jumpen                   
                     if(token.player == TeamType.Player2 && (dir == new Vector2Int(1,1) || dir == new Vector2Int(-1,1)) ||
-                    token.player == TeamType.Player1 && (dir == new Vector2Int(-1,-1) || dir == new Vector2Int(1,-1))) {
+                    token.player == TeamType.Player1 && (dir == new Vector2Int(-1,-1) || dir == new Vector2Int(1,-1))) {                      
                         Vector2Int jumpCoords = this.occupied + dir * (i + 1);
                         Token secondToken = this.board.getTokenOnField(jumpCoords);
-                        if(board.checkIfCoordsOnBoard(jumpCoords) && secondToken == null) {
+                        if(board.checkIfCoordsOnBoard(jumpCoords) && secondToken == null) {                           
                             this.addJump(jumpCoords);                        
                         }
-                    }
-                    
+                    }                    
                     break;
                 } 
             }
