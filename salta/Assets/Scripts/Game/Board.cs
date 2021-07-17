@@ -14,6 +14,8 @@ public class Board : MonoBehaviour
     [SerializeField] private float fieldSize;
 
     [SerializeField] private BoardBuilder boardBuilder;
+
+    [SerializeField] private SoundController soundController;
    
     private Token[,] gameField;
     private Token selectedToken;
@@ -65,15 +67,18 @@ public class Board : MonoBehaviour
                 this.deselectToken();
                 this.selectToken(token);
             } else if(jumpToken != null && !this.selectedToken.canJumpTo(coords)) {
-                //if there is any token that can jump and selected token can not jump --> show salta                
+                //if there is any token that can jump and selected token can not jump --> show salta     
+                this.soundController.playSalta();
                 this.gameController.overlay.showSalta(this.gameController.getActivePlayer());               
             }
             else if(this.selectedToken.canJumpTo(coords)) {
-                //make jump               
+                //make jump                   
+                soundController.playJump();                  
                 this.onSelectedTokenMoved(MovementType.Jump, coords, this.selectedToken);
             }
             else if(this.selectedToken.canMoveTo(coords)) {
                 //normal move
+                soundController.playMove(); 
                 this.onSelectedTokenMoved(MovementType.Move, coords, this.selectedToken);
             }            
         } else {
@@ -165,7 +170,22 @@ public class Board : MonoBehaviour
         return true;
     }
 
-    public bool checkIfGameFinished(Player pPlayer) {       
+    public bool checkIfGameFinished(Player pPlayer) {  
+        foreach (Token token in this.gameField) {   
+            if(token == null || token.player != pPlayer.teamType) {
+                continue;
+            }
+
+            Vector2Int endPosition = this.calculateEndPositonOfToken(token);            
+            
+            if(token.occupied != endPosition) {
+                return false;
+            }            
+        }
+        return true;
+
+        /* ALTERNATIVE BERECHNUNG DER VORHERIGEN VERSION */
+        /*
         TeamType teamType = pPlayer.teamType;
        
         int[] ys;
@@ -212,6 +232,7 @@ public class Board : MonoBehaviour
         }            
        
         return true;
+        */
     }
 
     public bool hasToken(Token pToken) {

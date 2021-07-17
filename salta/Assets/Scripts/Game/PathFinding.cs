@@ -9,13 +9,9 @@ public class PathFinding
 
     private const int MOVE_STRAIGH_COST = 10;
     private const int MOVE_DIAGONAL_COST = 14;
-
-    private int GRID_SIZE = 10;
+   
     private PathNode[,] grid;
-    public PathFinding (int pGridSize) {
-        this.GRID_SIZE = pGridSize;
-    }
-
+    
     public void setGrid(PathNode[,] pGrid) {
         this.grid = pGrid;
     }
@@ -28,8 +24,8 @@ public class PathFinding
         this.closeList = new List<PathNode>();
 
         //Init pathNodes
-        for (int x = 0; x < GRID_SIZE; x++) {
-             for (int y = 0; y < GRID_SIZE; y++) {
+        for (int x = 0; x < this.grid.GetLength(0); x++) {
+             for (int y = 0; y < this.grid.GetLength(0); y++) {
                 PathNode pathNode = this.grid[x, y];
                 pathNode.gCost = int.MaxValue;
                 pathNode.CalculateFCost();
@@ -40,7 +36,6 @@ public class PathFinding
         startNode.gCost = 0;
         startNode.hCost = this.CalculateDistanceCost(startNode, endNode);
         startNode.CalculateFCost();
-
 
         while (openList.Count > 0)
         {
@@ -87,18 +82,18 @@ public class PathFinding
                 neighbourList.Add(this.grid[pCurrentNode.x - 1, pCurrentNode.y - 1]);                
             }
             //Left Up
-            if(pCurrentNode.y + 1 < this.GRID_SIZE) {
+            if(pCurrentNode.y + 1 < this.grid.GetLength(0)) {
                 neighbourList.Add(this.grid[pCurrentNode.x - 1, pCurrentNode.y + 1]);                
             }
         }
 
-        if(pCurrentNode.x + 1 < this.GRID_SIZE) {
+        if(pCurrentNode.x + 1 < this.grid.GetLength(0)) {
             //Right Down
             if(pCurrentNode.y - 1  >= 0) {
                 neighbourList.Add(this.grid[pCurrentNode.x + 1, pCurrentNode.y - 1]);                
             }
             //Right Up
-            if(pCurrentNode.y + 1 < this.GRID_SIZE) {
+            if(pCurrentNode.y + 1 < this.grid.GetLength(0)) {
                 neighbourList.Add(this.grid[pCurrentNode.x + 1, pCurrentNode.y + 1]);                
             }
         }

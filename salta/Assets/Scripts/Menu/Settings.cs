@@ -9,5 +9,7 @@ public class Settings {
 
     public bool enableSelection { get; set; }
 
-    public int view { get; set; }
+    public bool enableSound { get; set; }
+
+    public int view { get; set; }    
 }

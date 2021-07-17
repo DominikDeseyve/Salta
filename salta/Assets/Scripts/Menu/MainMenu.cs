@@ -12,6 +12,10 @@ public class MainMenu : MonoBehaviour
     public void openSettings() {       
         SceneManager.LoadScene("settingsMenu");
     }
+
+    public void openGuide() {       
+        SceneManager.LoadScene("guide");
+    }
     public void exitGame() {       
         Application.Quit();
     }

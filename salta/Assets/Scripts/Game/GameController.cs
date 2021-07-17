@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 
 [RequireComponent(typeof(TokenCreator))]
@@ -12,9 +13,13 @@ using System.Linq;
     [SerializeField] public Overlay overlay;
     [SerializeField] private RestartScreenManager restartScreenManager;
 
+    [SerializeField] private SoundController soundController;
+
     private int count = 0;
 
     private GameState gameState;
+
+    private PathFinding pathFinding;
 
     private TokenCreator tokenCreator;
     private Player player1;
@@ -28,6 +33,7 @@ using System.Linq;
         this.createPlayers();
     }
     private void setDependencies() {
+        this.pathFinding = new PathFinding(); 
         this.tokenCreator = GetComponent<TokenCreator>();
     }
     private void createPlayers() {
@@ -96,7 +102,7 @@ using System.Linq;
     private Player getPassivePlayer() {
         return this.activePlayer == this.player1 ? this.player2 : this.player1;
     }
-    public void endTurn() {
+    public void endTurn() {        
         //calculate all new available moves for the next round
         this.activePlayer.generateAllAvailableMoves();
         this.getPassivePlayer().generateAllAvailableMoves();
@@ -110,7 +116,8 @@ using System.Linq;
     private bool checkIfGameFinished() {        
         return this.board.checkIfGameFinished(this.activePlayer);
     }   
-    private void endGame() {        
+    private void endGame() {  
+        soundController.playVictory();      
         int remainingMoves = this.countRemainingMoves();
         restartScreenManager.onGameFinished(activePlayer, remainingMoves);
         this.setGameState(GameState.Finished);
@@ -129,9 +136,7 @@ using System.Linq;
         this.startNewGame();
     }
     private int countRemainingMoves() {
-        int remainingMoves = 0;
-
-        PathFinding pathFinding = new PathFinding(10);        
+        int remainingMoves = 0;            
 
         List<Token> opponentTokenNotInGoal = this.board.getTokenNotInGoal(this.getPassivePlayer());
 
@@ -158,8 +163,10 @@ using System.Linq;
         this.gameState = pState;
     }
 
-
     public Player getActivePlayer() {
         return this.activePlayer;
+    }
+    public void navigateBack() {      
+        SceneManager.LoadScene("menu");
     }
 }

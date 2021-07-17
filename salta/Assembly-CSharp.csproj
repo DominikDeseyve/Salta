@@ -45,12 +45,12 @@
      <Compile Include="Assets\Scripts\Game\CameraController.cs" />
      <Compile Include="Assets\Scripts\Game\FieldSelectorCreator.cs" />
      <Compile Include="Assets\Scripts\Game\GameController.cs" />
-     <Compile Include="Assets\Scripts\Game\Location.cs" />
      <Compile Include="Assets\Scripts\Game\Overlay.cs" />
      <Compile Include="Assets\Scripts\Game\PathFinding.cs" />
      <Compile Include="Assets\Scripts\Game\PathNode.cs" />
      <Compile Include="Assets\Scripts\Game\Player.cs" />
      <Compile Include="Assets\Scripts\Game\RestartScreenManager.cs" />
+     <Compile Include="Assets\Scripts\Game\SoundController.cs" />
      <Compile Include="Assets\Scripts\Game\Token.cs" />
      <Compile Include="Assets\Scripts\Game\TokenCreator.cs" />
      <Compile Include="Assets\Scripts\InputSystem\BoardInputHandler.cs" />
@@ -61,6 +61,7 @@
      <Compile Include="Assets\Scripts\InputSystem\UIInputHandler.cs" />
      <Compile Include="Assets\Scripts\InputSystem\UIInputReceiver.cs" />
      <Compile Include="Assets\Scripts\Menu\Database.cs" />
+     <Compile Include="Assets\Scripts\Menu\GuideMenu.cs" />
      <Compile Include="Assets\Scripts\Menu\MainMenu.cs" />
      <Compile Include="Assets\Scripts\Menu\Settings.cs" />
      <Compile Include="Assets\Scripts\Menu\SettingsController.cs" />

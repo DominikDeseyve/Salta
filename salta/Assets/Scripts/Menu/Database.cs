@@ -15,6 +15,9 @@ public class Database
         if(PlayerPrefs.HasKey(preffix + "enable-selection")) {
             settings.enableSelection = this.convertIntToBool(PlayerPrefs.GetInt(preffix + "enable-selection"));
         }
+        if(PlayerPrefs.HasKey(preffix + "enable-sound")) {
+            settings.enableSound = this.convertIntToBool(PlayerPrefs.GetInt(preffix + "enable-sound"));
+        }
         if(PlayerPrefs.HasKey(preffix + "view")) {
             settings.view = PlayerPrefs.GetInt(preffix + "view");
         }
@@ -23,6 +26,7 @@ public class Database
     public void writeSettings(Settings pSettings) {
         PlayerPrefs.SetInt(preffix + "enable-fieldselector", convertBoolToInt(pSettings.enableFieldSelector));
         PlayerPrefs.SetInt(preffix + "enable-selection", convertBoolToInt(pSettings.enableSelection));
+        PlayerPrefs.SetInt(preffix + "enable-sound", convertBoolToInt(pSettings.enableSound));
         PlayerPrefs.SetInt(preffix + "view", pSettings.view);
     }
 
@@ -30,6 +34,7 @@ public class Database
         Settings settings = new Settings();
         settings.enableFieldSelector = true;
         settings.enableSelection = true;
+        settings.enableSound = false;
         settings.view = 0;
         return settings;
     }
